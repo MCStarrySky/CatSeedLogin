@@ -24,30 +24,30 @@ public class CommandChangePassword implements CommandExecutor {
         String name = sender.getName();
         LoginPlayer lp = Cache.getIgnoreCase(name);
         if (lp == null) {
-            sender.sendMessage(Config.Language.CHANGEPASSWORD_NOREGISTER);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_NOREGISTER);
             return true;
         }
         if (!LoginPlayerHelper.isLogin(name)) {
-            sender.sendMessage(Config.Language.CHANGEPASSWORD_NOLOGIN);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_NOLOGIN);
             return true;
         }
         if (!Objects.equals(Crypt.encrypt(name, args[0]), lp.getPassword().trim())) {
-            sender.sendMessage(Config.Language.CHANGEPASSWORD_OLDPASSWORD_INCORRECT);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_OLDPASSWORD_INCORRECT);
             return true;
 
         }
         if (!args[1].equals(args[2])) {
-            sender.sendMessage(Config.Language.CHANGEPASSWORD_PASSWORD_CONFIRM_FAIL);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_PASSWORD_CONFIRM_FAIL);
             return true;
         }
         if (!Util.passwordIsDifficulty(args[1])) {
-            sender.sendMessage(Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.COMMON_PASSWORD_SO_SIMPLE);
             return true;
         }
         if (!Cache.isLoaded) {
             return true;
         }
-        sender.sendMessage("§e修改中..");
+        sender.sendMessage("§f[§b登陆§f] " + "§e修改中..");
         CatSeedLogin.instance.runTaskAsync(() -> {
             try {
                 lp.setPassword(args[1]);
@@ -58,7 +58,7 @@ public class CommandChangePassword implements CommandExecutor {
                 Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> {
                     Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
                     if (player != null && player.isOnline()) {
-                        player.sendMessage(Config.Language.CHANGEPASSWORD_SUCCESS);
+                        player.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_SUCCESS);
                         Config.setOfflineLocation(player);
                         if (Config.Settings.CanTpSpawnLocation) {
                             player.teleport(Config.Settings.SpawnLocation);
@@ -73,7 +73,7 @@ public class CommandChangePassword implements CommandExecutor {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                sender.sendMessage("§c服务器内部错误!");
+                sender.sendMessage("§f[§b登陆§f] §c服务器内部错误!");
             }
         });
         return true;

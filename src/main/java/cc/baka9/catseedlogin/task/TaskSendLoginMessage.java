@@ -15,10 +15,10 @@ public class TaskSendLoginMessage extends Task {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!LoginPlayerHelper.isLogin(player.getName())) {
                 if (!LoginPlayerHelper.isRegister(player.getName())) {
-                    player.sendMessage(Config.Language.REGISTER_REQUEST);
+                    player.sendTitle(Config.Language.REGISTER_REQUEST , "" , 0 , 110 , 0);
                     continue;
                 }
-                player.sendMessage(Config.Language.LOGIN_REQUEST);
+                player.sendTitle(Config.Language.LOGIN_REQUEST , "" , 0 , 110 , 0);
 
             }
         }

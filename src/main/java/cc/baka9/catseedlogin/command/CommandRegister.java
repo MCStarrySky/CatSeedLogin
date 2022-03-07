@@ -1,5 +1,6 @@
 package cc.baka9.catseedlogin.command;
 
+import cc.baka9.catseedlogin.CTitle;
 import cc.baka9.catseedlogin.CatSeedLogin;
 import cc.baka9.catseedlogin.Config;
 import cc.baka9.catseedlogin.database.Cache;
@@ -23,31 +24,31 @@ public class CommandRegister implements CommandExecutor {
         Player player = (Player) sender;
         String name = sender.getName();
         if (LoginPlayerHelper.isLogin(name)) {
-            sender.sendMessage(Config.Language.REGISTER_AFTER_LOGIN_ALREADY);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_AFTER_LOGIN_ALREADY);
             return true;
         }
         if (LoginPlayerHelper.isRegister(name)) {
-            sender.sendMessage(Config.Language.REGISTER_BEFORE_LOGIN_ALREADY);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_BEFORE_LOGIN_ALREADY);
             return true;
         }
         if (!args[0].equals(args[1])) {
-            sender.sendMessage(Config.Language.REGISTER_PASSWORD_CONFIRM_FAIL);
+            CTitle.sendTitle((Player) sender , Config.Language.REGISTER_PASSWORD_CONFIRM_FAIL);
             return true;
         }
         if (!Util.passwordIsDifficulty(args[0])) {
-            sender.sendMessage(Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+            CTitle.sendTitle((Player) sender , "§c密码过于简单" ,Config.Language.COMMON_PASSWORD_SO_SIMPLE);
             return true;
         }
         if (!Cache.isLoaded) {
             return true;
         }
-        sender.sendMessage("§e注册中..");
+        CTitle.sendTitle((Player) sender , "§e注册中..");
         CatSeedLogin.instance.runTaskAsync(() -> {
             try {
                 String currentIp = player.getAddress().getAddress().getHostAddress();
                 List<LoginPlayer> LoginPlayerListlikeByIp = CatSeedLogin.sql.getLikeByIp(currentIp);
                 if (LoginPlayerListlikeByIp.size() >= Config.Settings.IpRegisterCountLimit) {
-                    sender.sendMessage(Config.Language.REGISTER_MORE
+                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_MORE
                             .replace("{count}", String.valueOf(LoginPlayerListlikeByIp.size()))
                             .replace("{accounts}", String.join(", ", LoginPlayerListlikeByIp.stream().map(LoginPlayer::getName).toArray(String[]::new))));
                 } else {
@@ -59,7 +60,7 @@ public class CommandRegister implements CommandExecutor {
                         CatSeedPlayerRegisterEvent event = new CatSeedPlayerRegisterEvent(Bukkit.getPlayer(sender.getName()));
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     });
-                    sender.sendMessage(Config.Language.REGISTER_SUCCESS);
+                    CTitle.sendTitle((Player) sender , Config.Language.REGISTER_SUCCESS);
                     player.updateInventory();
                     LoginPlayerHelper.recordCurrentIP(player, lp);
                 }
@@ -67,7 +68,7 @@ public class CommandRegister implements CommandExecutor {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                sender.sendMessage("§c服务器内部错误!");
+                CTitle.sendTitle((Player) sender , "§c服务器内部错误!");
             }
         });
         return true;

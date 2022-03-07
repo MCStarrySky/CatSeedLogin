@@ -10,7 +10,7 @@ REGISTER_BEFORE_LOGIN_ALREADY: "&c注册失败!这个游戏名已经被人注册
 REGISTER_AFTER_LOGIN_ALREADY: "&a你已经注册过了,需要修改密码请输入 &e/changepw 旧密码 新密码 重复新密码"
 REGISTER_PASSWORD_CONFIRM_FAIL: "&c你两次输入的密码不一样!"
 REGISTER_MORE: "&c你已经注册过 {count} 个账号了，无法注册更多账号，已经注册过的账号：{accounts}"
-COMMON_PASSWORD_SO_SIMPLE: "&c密码必须是6~16位之间的数字和字母组成"
+COMMON_PASSWORD_SO_SIMPLE: "&7密码必须是6~16位之间的数字和字母组成"
 RESETPASSWORD_NOREGISTER: "&c你还未注册!"
 RESETPASSWORD_EMAIL_DISABLE: "&c服务器没有开启邮箱功能"
 RESETPASSWORD_EMAIL_NO_SET: "&c没有设置过邮箱，无法使用此功能重设密码"

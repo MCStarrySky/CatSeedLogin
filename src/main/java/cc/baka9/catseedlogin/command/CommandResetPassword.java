@@ -1,5 +1,6 @@
 package cc.baka9.catseedlogin.command;
 
+import cc.baka9.catseedlogin.CTitle;
 import cc.baka9.catseedlogin.CatSeedLogin;
 import cc.baka9.catseedlogin.Config;
 import cc.baka9.catseedlogin.database.Cache;
@@ -25,25 +26,25 @@ public class CommandResetPassword implements CommandExecutor {
         LoginPlayer lp = Cache.getIgnoreCase(name);
 
         if (lp == null) {
-            sender.sendMessage(Config.Language.RESETPASSWORD_NOREGISTER);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_NOREGISTER);
             return true;
         }
         if (!Config.EmailVerify.Enable) {
-            sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_DISABLE);
+            sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_DISABLE);
             return true;
         }
         //command forget
         if (args[0].equalsIgnoreCase("forget")) {
             if (lp.getEmail() == null) {
-                sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_NO_SET);
+                sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_NO_SET);
             } else {
                 Optional<EmailCode> optionalEmailCode = EmailCode.getByName(name, EmailCode.Type.ResetPassword);
                 if (optionalEmailCode.isPresent()) {
-                    sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_REPEAT_SEND_MESSAGE.replace("{email}", optionalEmailCode.get().getEmail()));
+                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_REPEAT_SEND_MESSAGE.replace("{email}", optionalEmailCode.get().getEmail()));
                 } else {
                     //20分钟有效期的验证码
                     EmailCode emailCode = EmailCode.create(name, lp.getEmail(), 1000 * 60 * 20, EmailCode.Type.ResetPassword);
-                    sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_SENDING_MESSAGE.replace("{email}", lp.getEmail()));
+                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_SENDING_MESSAGE.replace("{email}", lp.getEmail()));
                     CatSeedLogin.instance.runTaskAsync(() -> {
                         try {
                             Mail.sendMail(emailCode.getEmail(), "重置密码",
@@ -51,9 +52,9 @@ public class CommandResetPassword implements CommandExecutor {
                                             "<br/>在服务器中使用帐号 " + name + " 输入指令<strong>/resetpassword re " + emailCode.getCode() + " 新密码</strong> 来重置新密码" +
                                             "<br/>此验证码有效期为 " + (emailCode.getDurability() / (1000 * 60)) + "分钟");
                             Bukkit.getScheduler().runTask(CatSeedLogin.instance, () ->
-                                    sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_SENT_MESSAGE.replace("{email}", emailCode.getEmail())));
+                                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_SENT_MESSAGE.replace("{email}", emailCode.getEmail())));
                         } catch (Exception e) {
-                            Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_WARN));
+                            Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_WARN));
                             e.printStackTrace();
                         }
                     });
@@ -64,7 +65,7 @@ public class CommandResetPassword implements CommandExecutor {
         //command re
         if (args[0].equalsIgnoreCase("re") && args.length > 2) {
             if (lp.getEmail() == null) {
-                sender.sendMessage(Config.Language.RESETPASSWORD_EMAIL_NO_SET);
+                sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_NO_SET);
             } else {
                 Optional<EmailCode> optionalEmailCode = EmailCode.getByName(name, EmailCode.Type.ResetPassword);
                 if (optionalEmailCode.isPresent()) {
@@ -73,10 +74,10 @@ public class CommandResetPassword implements CommandExecutor {
 
                     if (emailCode.getCode().equals(code)) {
                         if (!Util.passwordIsDifficulty(pwd)) {
-                            sender.sendMessage(Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+                            CTitle.sendTitle((Player) sender , "§c密码过于简单" ,Config.Language.COMMON_PASSWORD_SO_SIMPLE);
                             return true;
                         }
-                        sender.sendMessage("§e密码重置中..");
+                        CTitle.sendTitle((Player) sender , "§e密码重置中..");
                         CatSeedLogin.instance.runTaskAsync(() -> {
                             lp.setPassword(pwd);
                             lp.crypt();
@@ -91,7 +92,7 @@ public class CommandResetPassword implements CommandExecutor {
 //                                            PlayerTeleport.teleport(p, Config.Settings.SpawnLocation);
                                             p.teleport(Config.Settings.SpawnLocation);
                                         }
-                                        p.sendMessage(Config.Language.RESETPASSWORD_SUCCESS);
+                                        CTitle.sendTitle((Player) sender , Config.Language.RESETPASSWORD_SUCCESS);
                                         if (CatSeedLogin.loadProtocolLib) {
                                             LoginPlayerHelper.sendBlankInventoryPacket(player);
                                         }
@@ -99,18 +100,18 @@ public class CommandResetPassword implements CommandExecutor {
 
                                 });
                             } catch (Exception e) {
-                                Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> sender.sendMessage("§c数据库异常!"));
+                                Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> CTitle.sendTitle((Player) sender , "§c数据库异常!"));
                                 e.printStackTrace();
                             }
 
 
                         });
                     } else {
-                        sender.sendMessage(Config.Language.RESETPASSWORD_EMAILCODE_INCORRECT);
+                        CTitle.sendTitle((Player) sender , Config.Language.RESETPASSWORD_EMAILCODE_INCORRECT);
                     }
 
                 } else {
-                    sender.sendMessage(Config.Language.RESETPASSWORD_FAIL);
+                    CTitle.sendTitle((Player) sender , "§c密码重置出错" , "§7没有待重置密码的请求操作，或者验证码已过期");
                 }
             }
             return true;
