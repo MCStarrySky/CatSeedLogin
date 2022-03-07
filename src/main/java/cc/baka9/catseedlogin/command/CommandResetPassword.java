@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class CommandResetPassword implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args){
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (args.length == 0 || !(sender instanceof Player)) return false;
         Player player = (Player) sender;
         String name = player.getName();

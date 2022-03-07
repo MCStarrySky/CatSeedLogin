@@ -18,25 +18,25 @@ import java.util.stream.Collectors;
 public class LoginPlayerHelper {
     private static final Set<LoginPlayer> set = new HashSet<>();
 
-    public static List<LoginPlayer> getList(){
+    public static List<LoginPlayer> getList() {
         return new ArrayList<>(set);
     }
 
-    public static void add(LoginPlayer lp){
+    public static void add(LoginPlayer lp) {
         synchronized (set) {
 
             set.add(lp);
         }
     }
 
-    public static void remove(LoginPlayer lp){
+    public static void remove(LoginPlayer lp) {
         synchronized (set) {
 
             set.remove(lp);
         }
     }
 
-    public static void remove(String name){
+    public static void remove(String name) {
         synchronized (set) {
             for (LoginPlayer lp : set) {
                 if (lp.getName().equals(name)) {
@@ -47,7 +47,7 @@ public class LoginPlayerHelper {
         }
     }
 
-    public static boolean isLogin(String name){
+    public static boolean isLogin(String name) {
         synchronized (set) {
             for (LoginPlayer lp : set) {
                 if (lp.getName().equals(name)) {
@@ -58,14 +58,14 @@ public class LoginPlayerHelper {
         }
     }
 
-    public static boolean isRegister(String name){
+    public static boolean isRegister(String name) {
 
         return Cache.getIgnoreCase(name) != null;
 
     }
 
     // 记录登录IP
-    public static void recordCurrentIP(Player player, LoginPlayer lp){
+    public static void recordCurrentIP(Player player, LoginPlayer lp) {
         String currentIp = player.getAddress().getAddress().getHostAddress();
         List<String> ipsList = lp.getIpsList();
         ipsList.add(currentIp);
@@ -84,7 +84,7 @@ public class LoginPlayerHelper {
     }
 
     // ProtocolLib发包空背包
-    public static void sendBlankInventoryPacket(Player player){
+    public static void sendBlankInventoryPacket(Player player) {
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
         PacketContainer inventoryPacket = protocolManager.createPacket(PacketType.Play.Server.WINDOW_ITEMS);
         inventoryPacket.getIntegers().write(0, 0);

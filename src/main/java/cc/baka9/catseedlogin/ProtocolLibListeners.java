@@ -12,13 +12,7 @@ import org.bukkit.entity.Player;
 
 public class ProtocolLibListeners extends PacketAdapter {
 
-    public static void enable(){
-        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-        protocolManager.addPacketListener(new ProtocolLibListeners());
-    }
-
-
-    public ProtocolLibListeners(){
+    public ProtocolLibListeners() {
         super(CatSeedLogin.instance, ListenerPriority.HIGHEST,
                 PacketType.Play.Server.SET_SLOT,
                 PacketType.Play.Server.WINDOW_ITEMS
@@ -26,8 +20,13 @@ public class ProtocolLibListeners extends PacketAdapter {
 
     }
 
+    public static void enable() {
+        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+        protocolManager.addPacketListener(new ProtocolLibListeners());
+    }
+
     @Override
-    public void onPacketSending(PacketEvent event){
+    public void onPacketSending(PacketEvent event) {
         PacketType packetType = event.getPacketType();
         if (packetType == PacketType.Play.Server.SET_SLOT || packetType == PacketType.Play.Server.WINDOW_ITEMS) {
             Player player = event.getPlayer();
@@ -40,7 +39,7 @@ public class ProtocolLibListeners extends PacketAdapter {
     }
 
     @Override
-    public void onPacketReceiving(PacketEvent event){
+    public void onPacketReceiving(PacketEvent event) {
     }
 
 

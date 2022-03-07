@@ -26,7 +26,7 @@ public class CatSeedLogin extends JavaPlugin {
     public static Plugin plugin;
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
         instance = this;
         plugin = this;
         //Config
@@ -114,7 +114,7 @@ public class CatSeedLogin extends JavaPlugin {
 
 
     @Override
-    public void onDisable(){
+    public void onDisable() {
         Task.cancelAll();
         Bukkit.getOnlinePlayers().forEach(p -> {
             if (!LoginPlayerHelper.isLogin(p.getName())) return;
@@ -132,7 +132,7 @@ public class CatSeedLogin extends JavaPlugin {
         super.onDisable();
     }
 
-    public void runTaskAsync(Runnable runnable){
+    public void runTaskAsync(Runnable runnable) {
         scheduler.runTaskAsynchronously(this, runnable);
     }
 

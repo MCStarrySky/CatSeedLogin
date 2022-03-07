@@ -10,12 +10,12 @@ import java.sql.SQLException;
 public class MySQL extends SQL {
     private Connection connection;
 
-    public MySQL(JavaPlugin javaPlugin){
+    public MySQL(JavaPlugin javaPlugin) {
         super(javaPlugin);
     }
 
     @Override
-    public Connection getConnection() throws SQLException{
+    public Connection getConnection() throws SQLException {
 
         if (this.connection != null && !this.connection.isClosed() && this.connection.isValid(10)) {
             return this.connection;

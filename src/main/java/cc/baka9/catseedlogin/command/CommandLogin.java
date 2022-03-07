@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class CommandLogin implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String lable, String[] args){
+    public boolean onCommand(CommandSender sender, Command command, String lable, String[] args) {
         if (args.length == 0 || !(sender instanceof Player)) return false;
         Player player = (Player) sender;
         String name = player.getName();

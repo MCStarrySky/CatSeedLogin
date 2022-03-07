@@ -8,14 +8,15 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Task implements Runnable {
-    protected Task(){
-    }
-
     private static TaskAutoKick taskAutoKick;
     private static TaskSendLoginMessage taskSendLoginMessage;
     private static List<BukkitTask> bukkitTaskList = new ArrayList<>();
+    private static CatSeedLogin plugin = CatSeedLogin.instance;
 
-    public static TaskAutoKick getTaskAutoKick(){
+    protected Task() {
+    }
+
+    public static TaskAutoKick getTaskAutoKick() {
         if (taskAutoKick == null) {
             taskAutoKick = new TaskAutoKick();
         }
@@ -23,7 +24,7 @@ public abstract class Task implements Runnable {
 
     }
 
-    public static TaskSendLoginMessage getTaskSendLoginMessage(){
+    public static TaskSendLoginMessage getTaskSendLoginMessage() {
         if (taskSendLoginMessage == null) {
             taskSendLoginMessage = new TaskSendLoginMessage();
         }
@@ -31,15 +32,13 @@ public abstract class Task implements Runnable {
 
     }
 
-    private static CatSeedLogin plugin = CatSeedLogin.instance;
-
-    public static void runAll(){
+    public static void runAll() {
         runTaskTimer(Task.getTaskSendLoginMessage(), 20 * 5);
         runTaskTimer(Task.getTaskAutoKick(), 20 * 10);
 
     }
 
-    public static void cancelAll(){
+    public static void cancelAll() {
         Iterator<BukkitTask> iterator = bukkitTaskList.iterator();
         while (iterator.hasNext()) {
             iterator.next().cancel();
@@ -48,7 +47,7 @@ public abstract class Task implements Runnable {
 
     }
 
-    public static void runTaskTimer(Runnable runnable, long l){
+    public static void runTaskTimer(Runnable runnable, long l) {
         bukkitTaskList.add(plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, l));
 
     }

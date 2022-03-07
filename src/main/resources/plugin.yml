@@ -4,35 +4,35 @@ authors:
   - CatSeed
   - xiaozhangup
 version: ${version}
-softdepend: [Multiverse-Core, Citizens, Essentials, EssentialsSpawn, ProtocolLib]
+softdepend: [ Multiverse-Core, Citizens, Essentials, EssentialsSpawn, ProtocolLib ]
 api-version: 1.13
 commands:
   login:
     description: 使用密码登录
     usage: §f[§b登陆§f] /<command> 密码
-    aliases: [l]
+    aliases: [ l ]
   register:
     description: 注册密码
     usage: §f[§b登陆§f] /<command> 密码 重复密码
-    aliases: [reg]
+    aliases: [ reg ]
   bindemail:
     description: 绑定邮箱,重置密码
     usage:
       |
       §f[§b登陆§f] /<command> set 邮箱
       §f[§b登陆§f] /<command> verify 验证码
-    aliases: [bdmail]
+    aliases: [ bdmail ]
   resetpassword:
     description: 忘记密码,重置密码
     usage:
       |
       §f[§b登陆§f] /<command> forget
       §f[§b登陆§f] /<command> re 验证码 新密码
-    aliases: [repw]
+    aliases: [ repw ]
   changepassword:
     description: 修改密码
     usage: §f[§b登陆§f] /<command> 旧密码 新密码 重复新密码
-    aliases: [changepw]
+    aliases: [ changepw ]
   catseedlogin:
     description: 管理员管理指令
     usage:
@@ -54,5 +54,5 @@ commands:
       §e/<command> delPlayer [玩家名] §9管理员强制删除账户
       §e/<command> setPwd [玩家名] [密码] §9管理员强制设置玩家密码
       §3/<command> reload §9重载配置文件
-    aliases: [cslogin]
+    aliases: [ cslogin ]
     permission: catseedlogin.command.catseedlogin

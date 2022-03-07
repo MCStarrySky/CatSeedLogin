@@ -18,7 +18,7 @@ import java.util.List;
 public class CommandRegister implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String lable, String[] args){
+    public boolean onCommand(CommandSender sender, Command command, String lable, String[] args) {
         if (args.length != 2) return false;
         Player player = (Player) sender;
         String name = sender.getName();

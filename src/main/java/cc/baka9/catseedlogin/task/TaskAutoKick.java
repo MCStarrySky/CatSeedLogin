@@ -13,7 +13,7 @@ public class TaskAutoKick extends Task {
     public Map<String, Long> playerJoinTime = new HashMap<>();
 
     @Override
-    public void run(){
+    public void run() {
         if (!Cache.isLoaded || Config.Settings.AutoKick < 1) return;
         long autoKickMs = Config.Settings.AutoKick * 1000;
         long now = System.currentTimeMillis();
