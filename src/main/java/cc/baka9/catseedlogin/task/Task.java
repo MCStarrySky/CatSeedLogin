@@ -35,7 +35,7 @@ public abstract class Task implements Runnable {
 
     public static void runAll(){
         runTaskTimer(Task.getTaskSendLoginMessage(), 20 * 5);
-        runTaskTimer(Task.getTaskAutoKick(), 20 * 5);
+        runTaskTimer(Task.getTaskAutoKick(), 20 * 10);
 
     }
 

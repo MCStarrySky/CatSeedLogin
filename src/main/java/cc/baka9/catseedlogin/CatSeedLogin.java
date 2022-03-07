@@ -9,6 +9,7 @@ import cc.baka9.catseedlogin.object.LoginPlayerHelper;
 import cc.baka9.catseedlogin.task.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -22,10 +23,12 @@ public class CatSeedLogin extends JavaPlugin {
     public static BukkitScheduler scheduler = Bukkit.getScheduler();
     public static SQL sql;
     public static boolean loadProtocolLib = false;
+    public static Plugin plugin;
 
     @Override
     public void onEnable(){
         instance = this;
+        plugin = this;
         //Config
         try {
             Config.load();

@@ -1,4 +1,8 @@
 # CatSeedLogin 猫种子登陆
+
+##Build for HAPPYLAND
+之前其实也改过一次，不过改乱了，bug也改多了（（（
+#
 > 插件在Spigot API 1.13.2环境下开发的，
 由于现在很多登录插件功能配置非常多，配置起来麻烦并且有很多用不到的功能。
 crazylogin在高版本有各种匪夷所思的bug（总之我是被crazylogin从1.13.2的版本劝退自己开始造起了登陆插件）
