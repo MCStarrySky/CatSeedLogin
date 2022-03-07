@@ -19,6 +19,7 @@ public class EmailCode {
     private String code;
     private long durability;
     private long createTime;
+
     private EmailCode(String name, String email, long durability) {
         this.name = name;
         this.email = email;

@@ -1,5 +1,6 @@
 package cc.baka9.catseedlogin.command;
 
+import cc.baka9.catseedlogin.CTitle;
 import cc.baka9.catseedlogin.CatSeedLogin;
 import cc.baka9.catseedlogin.Config;
 import cc.baka9.catseedlogin.database.Cache;
@@ -24,30 +25,30 @@ public class CommandChangePassword implements CommandExecutor {
         String name = sender.getName();
         LoginPlayer lp = Cache.getIgnoreCase(name);
         if (lp == null) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_NOREGISTER);
+            CTitle.sendTitle((Player) sender, "§c你还没有注册", "§7因此你无法修改密码");
             return true;
         }
         if (!LoginPlayerHelper.isLogin(name)) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_NOLOGIN);
+            CTitle.sendTitle((Player) sender, "§c你还没有登陆", "§7因此你无法修改密码");
             return true;
         }
         if (!Objects.equals(Crypt.encrypt(name, args[0]), lp.getPassword().trim())) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_OLDPASSWORD_INCORRECT);
+            CTitle.sendTitle((Player) sender, "§c旧密码错误", "§7因此你无法修改密码");
             return true;
 
         }
         if (!args[1].equals(args[2])) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_PASSWORD_CONFIRM_FAIL);
+            CTitle.sendTitle((Player) sender, "§c两次密码不一致 ", "§7因此你无法修改密码");
             return true;
         }
         if (!Util.passwordIsDifficulty(args[1])) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+            CTitle.sendTitle((Player) sender, "§c你的密码太简单", "§7因此你无法修改密码");
             return true;
         }
         if (!Cache.isLoaded) {
             return true;
         }
-        sender.sendMessage("§f[§b登陆§f] " + "§e修改中..");
+        CTitle.sendTitle((Player) sender, "§e密码正在修改", "§7修改中..");
         CatSeedLogin.instance.runTaskAsync(() -> {
             try {
                 lp.setPassword(args[1]);
@@ -58,7 +59,7 @@ public class CommandChangePassword implements CommandExecutor {
                 Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> {
                     Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
                     if (player != null && player.isOnline()) {
-                        player.sendMessage("§f[§b登陆§f] " + Config.Language.CHANGEPASSWORD_SUCCESS);
+                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§f你可以使用新密码登陆了");
                         Config.setOfflineLocation(player);
                         if (Config.Settings.CanTpSpawnLocation) {
                             player.teleport(Config.Settings.SpawnLocation);
@@ -73,7 +74,7 @@ public class CommandChangePassword implements CommandExecutor {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                sender.sendMessage("§f[§b登陆§f] §c服务器内部错误!");
+                CTitle.sendTitle((Player) sender, "§c服务器内部错误", "§7请稍后再试或联系管理员");
             }
         });
         return true;

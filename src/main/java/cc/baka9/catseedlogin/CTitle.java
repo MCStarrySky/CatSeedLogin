@@ -18,9 +18,9 @@ public class CTitle {
             titlem.put(p, false);
             if (!LoginPlayerHelper.isLogin(p.getName())) {
                 if (!LoginPlayerHelper.isRegister(p.getName())) {
-                    p.sendTitle(Config.Language.REGISTER_REQUEST, ChatColor.COLOR_CHAR + "7输入/reg 密码 重复密码 来注册", 0, 60, 0);
+                    p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
                 } else {
-                    p.sendTitle(Config.Language.LOGIN_REQUEST, ChatColor.COLOR_CHAR + "7输入/l 密码 来登陆", 0, 60, 0);
+                    p.sendTitle(ChatColor.COLOR_CHAR + "a欢迎回来 请登陆", ChatColor.COLOR_CHAR + "7输入 /l 密码 来登陆", 0, 110, 0);
                 }
             }
         }, 28L);
@@ -33,9 +33,9 @@ public class CTitle {
             titlem.put(p, false);
             if (!LoginPlayerHelper.isLogin(p.getName())) {
                 if (!LoginPlayerHelper.isRegister(p.getName())) {
-                    p.sendTitle(Config.Language.REGISTER_REQUEST, ChatColor.COLOR_CHAR + "7输入/reg 密码 重复密码 来注册", 0, 110, 0);
+                    p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
                 } else {
-                    p.sendTitle(Config.Language.LOGIN_REQUEST, ChatColor.COLOR_CHAR + "7输入/l 密码 来登陆", 0, 110, 0);
+                    p.sendTitle(ChatColor.COLOR_CHAR + "a欢迎回来 请登陆", ChatColor.COLOR_CHAR + "7输入 /l 密码 来登陆", 0, 110, 0);
                 }
             }
         }, 28L);

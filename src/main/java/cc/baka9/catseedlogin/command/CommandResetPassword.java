@@ -26,25 +26,25 @@ public class CommandResetPassword implements CommandExecutor {
         LoginPlayer lp = Cache.getIgnoreCase(name);
 
         if (lp == null) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_NOREGISTER);
+            CTitle.sendTitle((Player) sender, "§c你还没有注册", "§7因此你不能修改密码");
             return true;
         }
         if (!Config.EmailVerify.Enable) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_DISABLE);
+            CTitle.sendTitle((Player) sender, "§6服务器没有启用邮箱", "§7无法绑定你的邮箱与账户");
             return true;
         }
         //command forget
         if (args[0].equalsIgnoreCase("forget")) {
             if (lp.getEmail() == null) {
-                sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_NO_SET);
+                CTitle.sendTitle((Player) sender, "§6邮箱设置有误", "§7无法绑定你的邮箱与账户");
             } else {
                 Optional<EmailCode> optionalEmailCode = EmailCode.getByName(name, EmailCode.Type.ResetPassword);
                 if (optionalEmailCode.isPresent()) {
-                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_REPEAT_SEND_MESSAGE.replace("{email}", optionalEmailCode.get().getEmail()));
+                    CTitle.sendTitle((Player) sender, "§6已经向您发送验证码", "§7请勿重复操作");
                 } else {
                     //20分钟有效期的验证码
                     EmailCode emailCode = EmailCode.create(name, lp.getEmail(), 1000 * 60 * 20, EmailCode.Type.ResetPassword);
-                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_SENDING_MESSAGE.replace("{email}", lp.getEmail()));
+                    CTitle.sendTitle((Player) sender, "§6正在发送验证码", "§7邮箱为 " + lp.getEmail());
                     CatSeedLogin.instance.runTaskAsync(() -> {
                         try {
                             Mail.sendMail(emailCode.getEmail(), "重置密码",
@@ -52,9 +52,9 @@ public class CommandResetPassword implements CommandExecutor {
                                             "<br/>在服务器中使用帐号 " + name + " 输入指令<strong>/resetpassword re " + emailCode.getCode() + " 新密码</strong> 来重置新密码" +
                                             "<br/>此验证码有效期为 " + (emailCode.getDurability() / (1000 * 60)) + "分钟");
                             Bukkit.getScheduler().runTask(CatSeedLogin.instance, () ->
-                                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_SENT_MESSAGE.replace("{email}", emailCode.getEmail())));
+                                    CTitle.sendTitle((Player) sender, "§6验证码已经发送完成", "§7请查阅您的邮箱"));
                         } catch (Exception e) {
-                            Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_WARN));
+                            Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> CTitle.sendTitle((Player) sender, "§c邮件发送错误", "§7请稍后再试或联系管理员"));
                             e.printStackTrace();
                         }
                     });
@@ -65,7 +65,7 @@ public class CommandResetPassword implements CommandExecutor {
         //command re
         if (args[0].equalsIgnoreCase("re") && args.length > 2) {
             if (lp.getEmail() == null) {
-                sender.sendMessage("§f[§b登陆§f] " + Config.Language.RESETPASSWORD_EMAIL_NO_SET);
+                CTitle.sendTitle((Player) sender, "§c你没有绑定邮箱", "§7因此你无法这样重置密码");
             } else {
                 Optional<EmailCode> optionalEmailCode = EmailCode.getByName(name, EmailCode.Type.ResetPassword);
                 if (optionalEmailCode.isPresent()) {
@@ -74,10 +74,10 @@ public class CommandResetPassword implements CommandExecutor {
 
                     if (emailCode.getCode().equals(code)) {
                         if (!Util.passwordIsDifficulty(pwd)) {
-                            CTitle.sendTitle((Player) sender , "§c密码过于简单" ,Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+                            CTitle.sendTitle((Player) sender, "§c密码过于简单", "§7请更换更复杂的密码");
                             return true;
                         }
-                        CTitle.sendTitle((Player) sender , "§e密码重置中..");
+                        CTitle.sendTitle((Player) sender, "§e密码重置中..", "§7请稍等..");
                         CatSeedLogin.instance.runTaskAsync(() -> {
                             lp.setPassword(pwd);
                             lp.crypt();
@@ -92,7 +92,7 @@ public class CommandResetPassword implements CommandExecutor {
 //                                            PlayerTeleport.teleport(p, Config.Settings.SpawnLocation);
                                             p.teleport(Config.Settings.SpawnLocation);
                                         }
-                                        CTitle.sendTitle((Player) sender , Config.Language.RESETPASSWORD_SUCCESS);
+                                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§f你可以使用新密码登陆了");
                                         if (CatSeedLogin.loadProtocolLib) {
                                             LoginPlayerHelper.sendBlankInventoryPacket(player);
                                         }
@@ -100,18 +100,18 @@ public class CommandResetPassword implements CommandExecutor {
 
                                 });
                             } catch (Exception e) {
-                                Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> CTitle.sendTitle((Player) sender , "§c数据库异常!"));
+                                Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> CTitle.sendTitle((Player) sender, "§c数据库异常", "§7请稍后再试或联系管理员"));
                                 e.printStackTrace();
                             }
 
 
                         });
                     } else {
-                        CTitle.sendTitle((Player) sender , Config.Language.RESETPASSWORD_EMAILCODE_INCORRECT);
+                        CTitle.sendTitle((Player) sender, "§c邮件发送错误", "§7请稍后再试或联系管理员");
                     }
 
                 } else {
-                    CTitle.sendTitle((Player) sender , "§c密码重置出错" , "§7没有待重置密码的请求操作，或者验证码已过期");
+                    CTitle.sendTitle((Player) sender, "§c密码重置出错", "§7没有待重置密码的请求操作 或者验证码已过期");
                 }
             }
             return true;

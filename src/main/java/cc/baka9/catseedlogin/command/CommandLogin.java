@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
@@ -22,30 +23,31 @@ public class CommandLogin implements CommandExecutor {
         Player player = (Player) sender;
         String name = player.getName();
         if (LoginPlayerHelper.isLogin(name)) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.LOGIN_REPEAT);
+            CTitle.sendTitle((Player) sender, "§a你已经登陆了", "§f无需重复登陆");
             return true;
         }
         LoginPlayer lp = Cache.getIgnoreCase(name);
         if (lp == null) {
-            CTitle.sendTitle((Player) sender, Config.Language.LOGIN_NOREGISTER);
+            CTitle.sendTitle((Player) sender, "§c你还没有注册", "§f因此你无法登陆");
             return true;
         }
         if (Objects.equals(Crypt.encrypt(name, args[0]), lp.getPassword().trim())) {
             LoginPlayerHelper.add(lp);
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
-            CTitle.sendTitle((Player) sender,Config.Language.LOGIN_SUCCESS);
+            CTitle.sendTitle((Player) sender, "§f登陆成功", "§f欢迎回来");
+            ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS);
             player.updateInventory();
             LoginPlayerHelper.recordCurrentIP(player, lp);
             if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
                 Config.getOfflineLocation(player).ifPresent(player::teleport);
             }
         } else {
-            CTitle.sendTitle((Player) sender,Config.Language.LOGIN_FAIL);
+            CTitle.sendTitle((Player) sender, "§c登陆失败", "§f请重新输入密码登陆");
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.FAIL);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
             if (Config.EmailVerify.Enable) {
-                CTitle.sendTitle((Player) sender, "§c密码依旧错误" , "§7重置密码请输入/resetpassword forget");
+                CTitle.sendTitle((Player) sender, "§c密码是错误的", "§7重置密码请输入 /repw forget");
             }
         }
         return true;

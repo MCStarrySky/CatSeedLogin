@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -24,33 +25,31 @@ public class CommandRegister implements CommandExecutor {
         Player player = (Player) sender;
         String name = sender.getName();
         if (LoginPlayerHelper.isLogin(name)) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_AFTER_LOGIN_ALREADY);
+            CTitle.sendTitle((Player) sender, "§c你已经注册过了", "§7改密请使用 /changepw");
             return true;
         }
         if (LoginPlayerHelper.isRegister(name)) {
-            sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_BEFORE_LOGIN_ALREADY);
+            CTitle.sendTitle((Player) sender, "§c注册失败", "§7这个名字已经被注册过了");
             return true;
         }
         if (!args[0].equals(args[1])) {
-            CTitle.sendTitle((Player) sender , Config.Language.REGISTER_PASSWORD_CONFIRM_FAIL);
+            CTitle.sendTitle((Player) sender, "§c注册失败", "§7两次输入的密码不一样");
             return true;
         }
         if (!Util.passwordIsDifficulty(args[0])) {
-            CTitle.sendTitle((Player) sender , "§c密码过于简单" ,Config.Language.COMMON_PASSWORD_SO_SIMPLE);
+            CTitle.sendTitle((Player) sender, "§c密码过于简单", "§7请更换更复杂的密码");
             return true;
         }
         if (!Cache.isLoaded) {
             return true;
         }
-        CTitle.sendTitle((Player) sender , "§e注册中..");
+        CTitle.sendTitle((Player) sender, "§e正在注册中", "§7欢迎加入我们");
         CatSeedLogin.instance.runTaskAsync(() -> {
             try {
                 String currentIp = player.getAddress().getAddress().getHostAddress();
                 List<LoginPlayer> LoginPlayerListlikeByIp = CatSeedLogin.sql.getLikeByIp(currentIp);
                 if (LoginPlayerListlikeByIp.size() >= Config.Settings.IpRegisterCountLimit) {
-                    sender.sendMessage("§f[§b登陆§f] " + Config.Language.REGISTER_MORE
-                            .replace("{count}", String.valueOf(LoginPlayerListlikeByIp.size()))
-                            .replace("{accounts}", String.join(", ", LoginPlayerListlikeByIp.stream().map(LoginPlayer::getName).toArray(String[]::new))));
+                    CTitle.sendTitle((Player) sender, "§c注册失败了", "§7你注册了太多帐号了");
                 } else {
                     LoginPlayer lp = new LoginPlayer(name, args[0]);
                     lp.crypt();
@@ -60,7 +59,8 @@ public class CommandRegister implements CommandExecutor {
                         CatSeedPlayerRegisterEvent event = new CatSeedPlayerRegisterEvent(Bukkit.getPlayer(sender.getName()));
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     });
-                    CTitle.sendTitle((Player) sender , Config.Language.REGISTER_SUCCESS);
+                    CTitle.sendTitle((Player) sender, "§e注册成功", "§7欢迎加入我们");
+                    ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS);
                     player.updateInventory();
                     LoginPlayerHelper.recordCurrentIP(player, lp);
                 }
@@ -68,7 +68,7 @@ public class CommandRegister implements CommandExecutor {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                CTitle.sendTitle((Player) sender , "§c服务器内部错误!");
+                CTitle.sendTitle((Player) sender, "§c服务器内部错误!", "§7稍后再试或联系管理员");
             }
         });
         return true;

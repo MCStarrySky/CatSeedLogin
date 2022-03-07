@@ -1,7 +1,6 @@
 package cc.baka9.catseedlogin;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,7 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -52,7 +50,6 @@ public class Config {
         MySQL.load();
         Settings.load();
         EmailVerify.load();
-        Language.load();
     }
 
     public static void save() {
@@ -211,56 +208,6 @@ public class Config {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * 语言，提示
-     */
-    public static class Language {
-        public static String LOGIN_REQUEST;
-        public static String REGISTER_REQUEST;
-        public static String LOGIN_NOREGISTER;
-        public static String LOGIN_REPEAT;
-        public static String LOGIN_SUCCESS;
-        public static String LOGIN_FAIL;
-        public static String LOGIN_FAIL_IF_FORGET;
-        public static String REGISTER_SUCCESS;
-        public static String REGISTER_BEFORE_LOGIN_ALREADY;
-        public static String REGISTER_AFTER_LOGIN_ALREADY;
-        public static String REGISTER_PASSWORD_CONFIRM_FAIL;
-        public static String COMMON_PASSWORD_SO_SIMPLE;
-        public static String RESETPASSWORD_NOREGISTER;
-        public static String RESETPASSWORD_EMAIL_DISABLE;
-        public static String RESETPASSWORD_EMAIL_NO_SET;
-        public static String RESETPASSWORD_EMAIL_REPEAT_SEND_MESSAGE;
-        public static String RESETPASSWORD_EMAIL_SENDING_MESSAGE;
-        public static String RESETPASSWORD_EMAIL_SENT_MESSAGE;
-        public static String RESETPASSWORD_EMAIL_WARN;
-        public static String RESETPASSWORD_SUCCESS;
-        public static String RESETPASSWORD_EMAILCODE_INCORRECT;
-        public static String RESETPASSWORD_FAIL;
-        public static String CHANGEPASSWORD_NOREGISTER;
-        public static String CHANGEPASSWORD_NOLOGIN;
-        public static String CHANGEPASSWORD_OLDPASSWORD_INCORRECT;
-        public static String CHANGEPASSWORD_PASSWORD_CONFIRM_FAIL;
-        public static String CHANGEPASSWORD_SUCCESS;
-        public static String AUTO_KICK;
-        public static String REGISTER_MORE;
-
-        public static void load() {
-            FileConfiguration resourceConfig = getResourceConfig("language.yml");
-            FileConfiguration config = getConfig("language.yml");
-            for (Field field : Language.class.getDeclaredFields()) {
-                try {
-                    String fieldName = field.getName();
-                    String value = config.getString(fieldName, resourceConfig.getString(fieldName));
-                    field.set(null, value.replace('&', ChatColor.COLOR_CHAR));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
     /**

@@ -16,6 +16,8 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.regex.Pattern;
 
@@ -35,6 +37,13 @@ public class Listeners implements Listener {
         }
         event.setCancelled(true);
 
+    }
+
+    @EventHandler
+    public void onPlayerJoins(PlayerJoinEvent event) {
+        CTitle.titlem.put(event.getPlayer(), false);
+        PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
+        event.getPlayer().addPotionEffect(effect);
     }
 
     @EventHandler
