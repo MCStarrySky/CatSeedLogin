@@ -24,19 +24,19 @@ public class CommandLogin implements CommandExecutor {
         Player player = (Player) sender;
         String name = player.getName();
         if (LoginPlayerHelper.isLogin(name)) {
-            CTitle.sendTitle((Player) sender, "§a你已经登陆了", "§f无需重复登陆");
+            CTitle.sendTitle((Player) sender, "§a你已经登陆了", "§7无需重复登陆");
             return true;
         }
         LoginPlayer lp = Cache.getIgnoreCase(name);
         if (lp == null) {
-            CTitle.sendTitle((Player) sender, "§c你还没有注册", "§f因此你无法登陆");
+            CTitle.sendTitle((Player) sender, "§c你还没有注册", "§7因此你无法登陆");
             return true;
         }
         if (Objects.equals(Crypt.encrypt(name, args[0]), lp.getPassword().trim())) {
             LoginPlayerHelper.add(lp);
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
-            CTitle.sendTitle((Player) sender, "§a登陆成功", "§f欢迎回来");
+            CTitle.sendTitle((Player) sender, "§a登陆成功", "§7欢迎回来");
             Bukkit.getScheduler().runTask(CatSeedLogin.plugin , () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
             player.updateInventory();
             LoginPlayerHelper.recordCurrentIP(player, lp);
@@ -44,7 +44,7 @@ public class CommandLogin implements CommandExecutor {
                 Config.getOfflineLocation(player).ifPresent(player::teleport);
             }
         } else {
-            CTitle.sendTitle((Player) sender, "§c登陆失败", "§f请重新输入密码登陆");
+            CTitle.sendTitle((Player) sender, "§c登陆失败", "§7请重新输入密码登陆");
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.FAIL);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
             if (Config.EmailVerify.Enable) {

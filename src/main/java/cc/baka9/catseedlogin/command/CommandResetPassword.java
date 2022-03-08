@@ -92,7 +92,7 @@ public class CommandResetPassword implements CommandExecutor {
 //                                            PlayerTeleport.teleport(p, Config.Settings.SpawnLocation);
                                             p.teleport(Config.Settings.SpawnLocation);
                                         }
-                                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§f你可以使用新密码登陆了");
+                                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§7你可以使用新密码登陆了");
                                         if (CatSeedLogin.loadProtocolLib) {
                                             LoginPlayerHelper.sendBlankInventoryPacket(player);
                                         }

@@ -59,7 +59,7 @@ public class CommandChangePassword implements CommandExecutor {
                 Bukkit.getScheduler().runTask(CatSeedLogin.instance, () -> {
                     Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
                     if (player != null && player.isOnline()) {
-                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§f你可以使用新密码登陆了");
+                        CTitle.sendTitle((Player) sender, "§e密码修改成功", "§7你可以使用新密码登陆了");
                         Config.setOfflineLocation(player);
                         if (Config.Settings.CanTpSpawnLocation) {
                             player.teleport(Config.Settings.SpawnLocation);

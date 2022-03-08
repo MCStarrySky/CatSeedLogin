@@ -5,6 +5,7 @@ import cc.baka9.catseedlogin.object.LoginPlayer;
 import cc.baka9.catseedlogin.object.LoginPlayerHelper;
 import cc.baka9.catseedlogin.task.Task;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -42,8 +43,14 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoins(PlayerJoinEvent event) {
         CTitle.titlem.put(event.getPlayer(), false);
+        Player p = event.getPlayer();
         PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
-        event.getPlayer().addPotionEffect(effect);
+        p.addPotionEffect(effect);
+        if (!LoginPlayerHelper.isRegister(p.getName())) {
+            p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
+        } else {
+            p.sendTitle(ChatColor.COLOR_CHAR + "a欢迎回来 请登陆", ChatColor.COLOR_CHAR + "7输入 /l 密码 来登陆", 0, 110, 0);
+        }
     }
 
     @EventHandler
