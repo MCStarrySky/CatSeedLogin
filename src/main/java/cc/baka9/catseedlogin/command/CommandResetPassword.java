@@ -107,7 +107,7 @@ public class CommandResetPassword implements CommandExecutor {
 
                         });
                     } else {
-                        CTitle.sendTitle((Player) sender, "§c邮件发送错误", "§7请稍后再试或联系管理员");
+                        CTitle.sendTitle((Player) sender, "§c你的验证码出错", "§7请重新查阅邮件并填写");
                     }
 
                 } else {

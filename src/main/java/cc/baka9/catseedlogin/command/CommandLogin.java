@@ -36,7 +36,7 @@ public class CommandLogin implements CommandExecutor {
             LoginPlayerHelper.add(lp);
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
-            CTitle.sendTitle((Player) sender, "§f登陆成功", "§f欢迎回来");
+            CTitle.sendTitle((Player) sender, "§a登陆成功", "§f欢迎回来");
             Bukkit.getScheduler().runTask(CatSeedLogin.plugin , () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
             player.updateInventory();
             LoginPlayerHelper.recordCurrentIP(player, lp);
