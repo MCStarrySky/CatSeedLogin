@@ -3,6 +3,7 @@ package cc.baka9.catseedlogin.command;
 import cc.baka9.catseedlogin.CTitle;
 import cc.baka9.catseedlogin.CatSeedLogin;
 import cc.baka9.catseedlogin.Config;
+import cc.baka9.catseedlogin.Listeners;
 import cc.baka9.catseedlogin.database.Cache;
 import cc.baka9.catseedlogin.event.CatSeedPlayerLoginEvent;
 import cc.baka9.catseedlogin.object.LoginPlayer;
@@ -37,7 +38,7 @@ public class CommandLogin implements CommandExecutor {
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
             Bukkit.getServer().getPluginManager().callEvent(loginEvent);
             CTitle.sendTitle((Player) sender, "§a登陆成功", "§7欢迎回来");
-            Bukkit.getScheduler().runTask(CatSeedLogin.plugin , () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
+            Bukkit.getScheduler().runTask(CatSeedLogin.plugin, () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
             player.updateInventory();
             LoginPlayerHelper.recordCurrentIP(player, lp);
             if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {

@@ -6,7 +6,9 @@
 
 #
 
-> 插件在Spigot API 1.13.2环境下开发的， 由于现在很多登录插件功能配置非常多，配置起来麻烦并且有很多用不到的功能。 crazylogin在高版本有各种匪夷所思的bug（总之我是被crazylogin从1.13.2的版本劝退自己开始造起了登陆插件） authme配置文件对一些经验不足的服主配置起来极其麻烦，甚至有人从入门到弃坑 有人测试1.7.10 和 1.11版本的服务器可以用 理论上应该支持1.7 ~ 1.15 一般都是低版本向上兼容。
+> 插件在Spigot API 1.13.2环境下开发的， 由于现在很多登录插件功能配置非常多，配置起来麻烦并且有很多用不到的功能。
+> crazylogin在高版本有各种匪夷所思的bug（总之我是被crazylogin从1.13.2的版本劝退自己开始造起了登陆插件） authme配置文件对一些经验不足的服主配置起来极其麻烦，甚至有人从入门到弃坑 有人测试1.7.10 和
+> 1.11版本的服务器可以用 理论上应该支持1.7 ~ 1.15 一般都是低版本向上兼容。
 
 ## 基础功能:
 
@@ -148,61 +150,61 @@
 ### settings.yml
 
 > \#相同ip注册数量限制  
-IpRegisterCountLimit: 2  
-\#相同ip登录数量限制  
-IpCountLimit: 2  
-\#登录点,默认是world主世界出生点,推荐用指令设置  
-SpawnLocation: 世界名:x轴:y轴:z轴:yaw:pitch  
-\#是否限制中文ID  
-LimitChineseID: true  
-\#游戏ID最小长度  
-MinLengthID: 2  
-\#游戏ID最大长度  
-MaxLengthID: 15  
-\#登陆之前不受到伤害  
-BeforeLoginNoDamage: true  
-\#离开服务器重新进入的间隔限制 单位：tick（如果设置3秒则是60）  
-ReenterInterval: 60  
-\#登陆之后是否返回退出地点  
-AfterLoginBack: true  
-\#登录之前是否强制在登陆地点  
-CanTpSpawnLocation: true  
-\#登陆之前允许执行的指令 (支持正则表达式)  
-CommandWhiteList:  
-\- /(?i)l(ogin)?(\z| .\*)  
-\- /(?i)reg(ister)?(\z| .\*)  
-\- /(?i)resetpassword?(\z| .\*)  
-\- /(?i)repw?(\z| .\*)  
-\- /(?i)worldedit cui  
-\#设置自动踢出未登录的玩家 (默认120秒，小于1秒则关闭此功能)  
-AutoKick: 120  
-\#死亡状态退出游戏是否记录退出位置  
-DeathStateQuitRecordLocation: true
+> IpRegisterCountLimit: 2  
+> \#相同ip登录数量限制  
+> IpCountLimit: 2  
+> \#登录点,默认是world主世界出生点,推荐用指令设置  
+> SpawnLocation: 世界名:x轴:y轴:z轴:yaw:pitch  
+> \#是否限制中文ID  
+> LimitChineseID: true  
+> \#游戏ID最小长度  
+> MinLengthID: 2  
+> \#游戏ID最大长度  
+> MaxLengthID: 15  
+> \#登陆之前不受到伤害  
+> BeforeLoginNoDamage: true  
+> \#离开服务器重新进入的间隔限制 单位：tick（如果设置3秒则是60）  
+> ReenterInterval: 60  
+> \#登陆之后是否返回退出地点  
+> AfterLoginBack: true  
+> \#登录之前是否强制在登陆地点  
+> CanTpSpawnLocation: true  
+> \#登陆之前允许执行的指令 (支持正则表达式)  
+> CommandWhiteList:  
+> \- /(?i)l(ogin)?(\z| .\*)  
+> \- /(?i)reg(ister)?(\z| .\*)  
+> \- /(?i)resetpassword?(\z| .\*)  
+> \- /(?i)repw?(\z| .\*)  
+> \- /(?i)worldedit cui  
+> \#设置自动踢出未登录的玩家 (默认120秒，小于1秒则关闭此功能)  
+> AutoKick: 120  
+> \#死亡状态退出游戏是否记录退出位置  
+> DeathStateQuitRecordLocation: true
 
 ### sql.yml
 
 如果不使用mysql数据库储存，就请无视此配置
 > MySQL:  
-\#是否开启数据库功能（false = 不开启）  
-Enable: false  
-Host: 127.0.0.1  
-Port: '3306'  
-Database: databaseName  
-User: root  
-Password: root
+> \#是否开启数据库功能（false = 不开启）  
+> Enable: false  
+> Host: 127.0.0.1  
+> Port: '3306'  
+> Database: databaseName  
+> User: root  
+> Password: root
 
 ### emailVerify.yml
 
 如果不使用邮箱一系列功能，就请无视此配置
 > \#是否开启邮箱系列的功能（false = 不开启）  
-Enable: false  
-EmailAccount: "763737569@qq.com"  
-EmailPassword: "123456"  
-EmailSmtpHost: "smtp.qq.com"  
-EmailSmtpPort: "465"  
-SSLAuthVerify: true  
-\#发件人的名字  
-FromPersonal: "xxx服务器"
+> Enable: false  
+> EmailAccount: "763737569@qq.com"  
+> EmailPassword: "123456"  
+> EmailSmtpHost: "smtp.qq.com"  
+> EmailSmtpPort: "465"  
+> SSLAuthVerify: true  
+> \#发件人的名字  
+> FromPersonal: "xxx服务器"
 
 ### language.yml
 

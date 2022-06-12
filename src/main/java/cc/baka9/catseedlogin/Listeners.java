@@ -1,11 +1,13 @@
 package cc.baka9.catseedlogin;
 
 import cc.baka9.catseedlogin.database.Cache;
+import cc.baka9.catseedlogin.event.CatSeedPlayerLoginEvent;
 import cc.baka9.catseedlogin.object.LoginPlayer;
 import cc.baka9.catseedlogin.object.LoginPlayerHelper;
 import cc.baka9.catseedlogin.task.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,9 +22,15 @@ import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Listeners implements Listener {
+
+    public static Map<String, Long> ipLong = new HashMap<>();
+    public static Map<String, Long> idLong = new HashMap<>();
 
     private boolean playerIsNotMinecraftPlayer(Player p) {
         return !p.getClass().getName().matches("org\\.bukkit\\.craftbukkit.*?\\.entity\\.CraftPlayer");
@@ -44,12 +52,33 @@ public class Listeners implements Listener {
     public void onPlayerJoins(PlayerJoinEvent event) {
         CTitle.titlem.put(event.getPlayer(), false);
         Player p = event.getPlayer();
-        PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
-        p.addPotionEffect(effect);
-        if (!LoginPlayerHelper.isRegister(p.getName())) {
-            p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
+        if (
+                idLong.get(p.getName()) != null &&
+                ipLong.get(p.getAddress().getAddress().getHostAddress()) != null &&
+                System.currentTimeMillis() - Listeners.idLong.get(p.getName()) <= 3600000 &&
+                System.currentTimeMillis() - Listeners.ipLong.get(p.getAddress().getAddress().getHostAddress()) <= 3600000
+        ) {
+            String name = p.getName();
+            LoginPlayer lp = Cache.getIgnoreCase(name);
+            LoginPlayerHelper.add(lp);
+            CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(p, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
+            Bukkit.getServer().getPluginManager().callEvent(loginEvent);
+            CTitle.sendTitle(p, "§2离开不久 已自动登录", "§7欢迎回来");
+            p.updateInventory();
+            LoginPlayerHelper.recordCurrentIP(p, lp);
+            Listeners.idLong.put(p.getName(), System.currentTimeMillis());
+            Listeners.ipLong.put(p.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
+            if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
+                Config.getOfflineLocation(p).ifPresent(p::teleport);
+            };
         } else {
-            p.sendTitle(ChatColor.COLOR_CHAR + "a欢迎回来 请登陆", ChatColor.COLOR_CHAR + "7输入 /l 密码 来登陆", 0, 110, 0);
+            PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
+            p.addPotionEffect(effect);
+            if (!LoginPlayerHelper.isRegister(p.getName())) {
+                p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
+            } else {
+                p.sendTitle(ChatColor.COLOR_CHAR + "a欢迎回来 请登陆", ChatColor.COLOR_CHAR + "7输入 /l 密码 来登陆", 0, 110, 0);
+            }
         }
     }
 
@@ -191,6 +220,9 @@ public class Listeners implements Listener {
             Bukkit.getScheduler().runTaskLater(CatSeedLogin.instance, () -> LoginPlayerHelper.remove(player.getName()), Config.Settings.ReenterInterval);
         }
         Task.getTaskAutoKick().playerJoinTime.remove(player.getName());
+
+        Listeners.idLong.put(player.getName(), System.currentTimeMillis());
+        Listeners.ipLong.put(player.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
 
     }
 

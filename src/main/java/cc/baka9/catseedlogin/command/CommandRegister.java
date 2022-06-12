@@ -60,7 +60,7 @@ public class CommandRegister implements CommandExecutor {
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     });
                     CTitle.sendTitle((Player) sender, "§e注册成功", "§7欢迎加入我们");
-                    Bukkit.getScheduler().runTask(CatSeedLogin.plugin , () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
+                    Bukkit.getScheduler().runTask(CatSeedLogin.plugin, () -> ((Player) sender).removePotionEffect(PotionEffectType.BLINDNESS));
                     player.updateInventory();
                     LoginPlayerHelper.recordCurrentIP(player, lp);
                 }

@@ -6,10 +6,10 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -84,11 +84,11 @@ public class Config {
         try {
             String[] locStrs = str.split(":");
             World world = Bukkit.getWorld(locStrs[0]);
-            double x = Double.valueOf(locStrs[1]);
-            double y = Double.valueOf(locStrs[2]);
-            double z = Double.valueOf(locStrs[3]);
-            float yaw = Float.valueOf(locStrs[4]);
-            float pitch = Float.valueOf(locStrs[5]);
+            double x = Double.parseDouble(locStrs[1]);
+            double y = Double.parseDouble(locStrs[2]);
+            double z = Double.parseDouble(locStrs[3]);
+            float yaw = Float.parseFloat(locStrs[4]);
+            float pitch = Float.parseFloat(locStrs[5]);
             loc = new Location(world, x, y, z, yaw, pitch);
         } catch (Exception ignored) {
             loc = getDefaultWorld().getSpawnLocation();
@@ -110,7 +110,7 @@ public class Config {
 
     // 获取默认世界
     private static World getDefaultWorld() {
-        try (InputStream is = new BufferedInputStream(new FileInputStream(new File("server.properties")))) {
+        try (InputStream is = new BufferedInputStream(Files.newInputStream(new File("server.properties").toPath()))) {
             Properties properties = new Properties();
             properties.load(is);
             String worldName = properties.getProperty("level-name");

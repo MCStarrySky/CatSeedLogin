@@ -15,7 +15,7 @@ public class CTitle {
     public static void sendTitle(Player p, String s, String s1) {
         titlem.put(p, true);
         p.sendTitle(s, s1, 0, 30, 0);
-        p.playSound(p.getLocation() , Sound.BLOCK_NOTE_BLOCK_BELL  , 1 , 1);
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
         Bukkit.getScheduler().runTaskLater(CatSeedLogin.plugin, () -> {
             titlem.put(p, false);
             if (!LoginPlayerHelper.isLogin(p.getName())) {
@@ -31,7 +31,7 @@ public class CTitle {
     public static void sendTitle(Player p, String s) {
         titlem.put(p, true);
         p.sendTitle(s, "", 0, 30, 0);
-        p.playSound(p.getLocation() , Sound.BLOCK_NOTE_BLOCK_BELL  , 1 , 1);
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
         Bukkit.getScheduler().runTaskLater(CatSeedLogin.plugin, () -> {
             titlem.put(p, false);
             if (!LoginPlayerHelper.isLogin(p.getName())) {
