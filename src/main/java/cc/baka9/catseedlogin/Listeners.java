@@ -214,16 +214,14 @@ public class Listeners implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (LoginPlayerHelper.isLogin(player.getName())) {
+            Listeners.idLong.put(player.getName(), System.currentTimeMillis());
+            Listeners.ipLong.put(player.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
             if (!player.isDead() || Config.Settings.DeathStateQuitRecordLocation) {
                 Config.setOfflineLocation(player);
             }
             Bukkit.getScheduler().runTaskLater(CatSeedLogin.instance, () -> LoginPlayerHelper.remove(player.getName()), Config.Settings.ReenterInterval);
         }
         Task.getTaskAutoKick().playerJoinTime.remove(player.getName());
-
-        Listeners.idLong.put(player.getName(), System.currentTimeMillis());
-        Listeners.ipLong.put(player.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
-
     }
 
     @EventHandler
