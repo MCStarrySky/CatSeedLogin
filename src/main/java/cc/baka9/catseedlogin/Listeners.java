@@ -7,7 +7,6 @@ import cc.baka9.catseedlogin.object.LoginPlayerHelper;
 import cc.baka9.catseedlogin.task.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -22,7 +21,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -54,9 +52,9 @@ public class Listeners implements Listener {
         Player p = event.getPlayer();
         if (
                 idLong.get(p.getName()) != null &&
-                ipLong.get(p.getAddress().getAddress().getHostAddress()) != null &&
-                System.currentTimeMillis() - Listeners.idLong.get(p.getName()) <= 3600000 &&
-                System.currentTimeMillis() - Listeners.ipLong.get(p.getAddress().getAddress().getHostAddress()) <= 3600000
+                        ipLong.get(p.getAddress().getAddress().getHostAddress()) != null &&
+                        System.currentTimeMillis() - Listeners.idLong.get(p.getName()) <= 3600000 &&
+                        System.currentTimeMillis() - Listeners.ipLong.get(p.getAddress().getAddress().getHostAddress()) <= 3600000
         ) {
             String name = p.getName();
             LoginPlayer lp = Cache.getIgnoreCase(name);
@@ -70,7 +68,8 @@ public class Listeners implements Listener {
             Listeners.ipLong.put(p.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
             if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
                 Config.getOfflineLocation(p).ifPresent(p::teleport);
-            };
+            }
+            ;
         } else {
             PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
             p.addPotionEffect(effect);

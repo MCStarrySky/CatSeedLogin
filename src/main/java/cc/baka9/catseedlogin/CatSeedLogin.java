@@ -22,7 +22,6 @@ public class CatSeedLogin extends JavaPlugin {
     public static CatSeedLogin instance;
     public static BukkitScheduler scheduler = Bukkit.getScheduler();
     public static SQL sql;
-    public static boolean loadProtocolLib = false;
     public static Plugin plugin;
 
     @Override
