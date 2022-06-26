@@ -50,15 +50,6 @@ public class CatSeedLogin extends JavaPlugin {
         //Listeners
         getServer().getPluginManager().registerEvents(new Listeners(), this);
 
-        //ProtocolLibListeners
-        try {
-            Class.forName("com.comphenix.protocol.ProtocolLib");
-            ProtocolLibListeners.enable();
-            loadProtocolLib = true;
-        } catch (ClassNotFoundException e) {
-            getLogger().warning("服务器没有装载ProtocolLib插件，这将无法使用登录前隐藏背包");
-        }
-
         //Commands
         getServer().getPluginCommand("login").setExecutor(new CommandLogin());
         getServer().getPluginCommand("login").setTabCompleter((commandSender, command, s, args)
