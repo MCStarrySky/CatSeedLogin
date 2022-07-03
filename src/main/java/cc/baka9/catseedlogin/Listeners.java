@@ -50,6 +50,7 @@ public class Listeners implements Listener {
     public void onPlayerJoins(PlayerJoinEvent event) {
         CTitle.titlem.put(event.getPlayer(), false);
         Player p = event.getPlayer();
+        Cache.refresh(p.getName());
         if (
                 idLong.get(p.getName()) != null &&
                         ipLong.get(p.getAddress().getAddress().getHostAddress()) != null &&
@@ -64,14 +65,11 @@ public class Listeners implements Listener {
             CTitle.sendTitle(p, "§2离开不久 已自动登录", "§7欢迎回来");
             p.updateInventory();
             LoginPlayerHelper.recordCurrentIP(p, lp);
-            Listeners.idLong.put(p.getName(), System.currentTimeMillis());
-            Listeners.ipLong.put(p.getAddress().getAddress().getHostAddress(), System.currentTimeMillis());
-            if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
-                Config.getOfflineLocation(p).ifPresent(p::teleport);
-            }
-            ;
         } else {
-            PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 0, false, false);
+            if (Config.Settings.CanTpSpawnLocation) {
+                p.teleport(Config.Settings.SpawnLocation);
+            }
+            PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 1, false, false);
             p.addPotionEffect(effect);
             if (!LoginPlayerHelper.isRegister(p.getName())) {
                 p.sendTitle(ChatColor.COLOR_CHAR + "e欢迎 初来乍到,请注册", ChatColor.COLOR_CHAR + "7输入 /reg 密码 重复密码 来注册", 0, 110, 0);
@@ -221,15 +219,6 @@ public class Listeners implements Listener {
             Bukkit.getScheduler().runTaskLater(CatSeedLogin.instance, () -> LoginPlayerHelper.remove(player.getName()), Config.Settings.ReenterInterval);
         }
         Task.getTaskAutoKick().playerJoinTime.remove(player.getName());
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player p = event.getPlayer();
-        Cache.refresh(p.getName());
-        if (Config.Settings.CanTpSpawnLocation) {
-            p.teleport(Config.Settings.SpawnLocation);
-        }
     }
 
     //id只能下划线字母数字
