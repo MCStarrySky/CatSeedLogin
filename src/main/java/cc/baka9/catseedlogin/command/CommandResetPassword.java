@@ -74,7 +74,8 @@ public class CommandResetPassword implements CommandExecutor {
 
                     if (emailCode.getCode().equals(code)) {
                         if (!Util.passwordIsDifficulty(pwd)) {
-                            CTitle.sendTitle((Player) sender, "§c密码过于简单", "§7请更换更复杂的密码");
+
+
                             return true;
                         }
                         CTitle.sendTitle((Player) sender, "§e密码重置中..", "§7请稍等..");

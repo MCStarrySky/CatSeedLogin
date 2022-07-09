@@ -42,7 +42,7 @@ public class CommandChangePassword implements CommandExecutor {
             return true;
         }
         if (!Util.passwordIsDifficulty(args[1])) {
-            CTitle.sendTitle((Player) sender, "§c你的密码太简单", "§7因此你无法修改密码");
+            CTitle.sendTitle((Player) sender, "§c密码不合要求", "§7需要6-16位数字与字母");
             return true;
         }
         if (!Cache.isLoaded) {

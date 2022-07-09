@@ -37,7 +37,7 @@ public class CommandRegister implements CommandExecutor {
             return true;
         }
         if (!Util.passwordIsDifficulty(args[0])) {
-            CTitle.sendTitle((Player) sender, "§c密码过于简单", "§7请更换更复杂的密码");
+            CTitle.sendTitle((Player) sender, "§c密码不合要求", "§7需要6-16位数字与字母");
             return true;
         }
         if (!Cache.isLoaded) {
