@@ -298,6 +298,9 @@ public class CommandCatSeedLogin implements CommandExecutor {
                                 p.sendMessage("§c密码已被管理员重新设置,请重新登录");
                                 if (Config.Settings.CanTpSpawnLocation) {
                                     p.teleport(Config.Settings.SpawnLocation);
+                                    if (CatSeedLogin.loadProtocolLib) {
+                                        LoginPlayerHelper.sendBlankInventoryPacket(p);
+                                    }
                                 }
                             }
 
